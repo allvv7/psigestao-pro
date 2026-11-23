@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PsiGestão Pro — Kit de Gestão Financeira, Sessões e Livro-Caixa para Psicólogos</title>
+  <meta name="description" content="Organize o valor da sua sessão, pacotes mensais, vagas sociais, controle de faltas, recibos do Receita Saúde e Livro-Caixa do Carnê-Leão em 15 minutos por semana no Excel ou Google Planilhas.">
+  <style>
+    :root {
+      --bg-ivory: #fbf9f5;
+      --bg-warm: #f4f0e8;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --ink-secondary: #334155;
+      --ink-muted: #64748b;
+      --sage: #0f766e;
+      --sage-dark: #115e59;
+      --sage-light: #f0fdfa;
+      --sage-border: #99f6e4;
+      --terracotta: #c2410c;
+      --terracotta-light: #fff7ed;
+      --border: #e2e8f0;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --shadow-soft: 0 12px 32px -8px rgba(15, 23, 42, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-ivory);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header / Nav */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(251, 249, 245, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      gap: 16px;
+    }
+    .brand-logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .brand-logo span { color: var(--sage); }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--ink-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.15s ease;
+    }
+    .nav-links a:hover { color: var(--sage); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background-color: var(--sage);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.22);
+    }
+    .btn-primary:hover {
+      background-color: var(--sage-dark);
+      color: #ffffff;
+    }
+    .btn-outline {
+      background-color: var(--surface);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+    .btn-outline:hover {
+      border-color: var(--sage);
+      color: var(--sage);
+    }
+    .btn-sm {
+      padding: 9px 16px;
+      font-size: 13px;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 64px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 44px;
+      align-items: center;
+    }
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--sage);
+      margin-bottom: 12px;
+      display: block;
+    }
+    h1 {
+      font-size: 40px;
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+      margin: 0 0 18px 0;
+      color: var(--ink);
+    }
+    .hero-lead {
+      font-size: 18px;
+      color: var(--ink-secondary);
+      margin: 0 0 28px 0;
+    }
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .trust-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .trust-item strong {
+      display: block;
+      font-size: 15px;
+      color: var(--ink);
+    }
+    .trust-item span {
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+    .hero-visual {
+      background: var(--surface);
+      padding: 14px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+    .hero-visual img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+    }
+
+    /* Sections */
+    .section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-alt {
+      background-color: var(--bg-warm);
+    }
+    .section-header {
+      max-width: 720px;
+      margin: 0 auto 44px auto;
+      text-align: center;
+    }
+    .section-header h2 {
+      font-size: 32px;
+      line-height: 1.24;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px 0;
+    }
+    .section-header p {
+      font-size: 17px;
+      color: var(--ink-secondary);
+      margin: 0;
+    }
+
+    /* Interactive Calculator */
+    .calc-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 36px;
+    }
+    .calc-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .calc-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .field-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .field-label output {
+      font-weight: 800;
+      color: var(--sage);
+      font-variant-numeric: tabular-nums;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--sage);
+      cursor: pointer;
+    }
+    .calc-results {
+      background: var(--sage-light);
+      border: 1px solid var(--sage-border);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .result-hero {
+      background: var(--surface);
+      border: 1px solid var(--sage-border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .result-hero .lbl {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--sage-dark);
+    }
+    .result-hero .val {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--ink);
+      display: block;
+      margin: 4px 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .result-hero .sub {
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .result-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .result-stat small {
+      display: block;
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-bottom: 4px;
+    }
+    .result-stat strong {
+      font-size: 18px;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Before vs After */
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: center;
+    }
+    .comparison-img {
+      width: 100%;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+    .pillar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .pillar-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+    }
+    .pillar-item h3 {
+      margin: 0 0 6px 0;
+      font-size: 18px;
+      color: var(--ink);
+    }
+    .pillar-item p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--ink-secondary);
+    }
+
+    /* Product Tour Tabs */
+    .tabs-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .tab-btn {
+      background: var(--surface);
+      color: var(--ink-secondary);
+      border: 1px solid var(--border);
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn.active {
+      background: var(--sage);
+      color: #ffffff;
+      border-color: var(--sage);
+    }
+    .tab-panel {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-soft);
+    }
+    .tab-panel.active {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .preview-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .preview-table th, .preview-table td {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .preview-table th {
+      background: #f1f5f9;
+      font-weight: 700;
+    }
+    .cell-blue { background: #dbeafe; font-weight: 700; color: #0f172a; }
+    .cell-purple { background: #f3e8ff; font-weight: 700; color: #3b0764; }
+    .cell-green { background: #d1fae5; font-weight: 700; color: #065f46; }
+
+    /* Pricing Grid */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+    }
+    .pricing-card.featured {
+      border: 2px solid var(--sage);
+      background: #ffffff;
+    }
+    .featured-tag {
+      display: inline-block;
+      background: var(--sage-light);
+      color: var(--sage-dark);
+      border: 1px solid var(--sage-border);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+    .pkg-name {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 6px 0;
+    }
+    .pkg-desc {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin: 0 0 20px 0;
+    }
+    .pkg-price {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
+    }
+    .pkg-price span {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink-muted);
+    }
+    .pkg-Anchor {
+      font-size: 13px;
+      color: var(--sage-dark);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 28px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      font-size: 14px;
+    }
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: var(--ink-secondary);
+    }
+    .feature-list li strong { color: var(--ink); }
+
+    /* FAQ */
+    .faq-list {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    details.faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+    }
+    details.faq-item summary {
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    details.faq-item p {
+      margin: 12px 0 0 0;
+      font-size: 14px;
+      color: var(--ink-secondary);
+    }
+
+    /* Modal Checkout Preview */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      background: var(--surface);
+      max-width: 520px;
+      width: 100%;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 48px rgba(15, 23, 42, 0.2);
+    }
+
+    .site-footer {
+      padding: 40px 0;
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    @media (max-width: 920px) {
+      .hero-grid,
+      .calc-wrapper,
+      .split-grid,
+      .tab-panel.active,
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      h1 { font-size: 32px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container nav-bar">
+      <a href="#topo" class="brand-logo" id="nav-logo">PsiGestão <span>Pro</span></a>
+      <nav class="nav-links" aria-label="Navegação Principal">
+        <a href="#simulador-interativo" id="nav-link-simulador">Simulador de Sessão</a>
+        <a href="#tour-ferramentas" id="nav-link-ferramentas">Por Dentro das Planilhas</a>
+        <a href="#pacotes-precos" id="nav-link-precos">Pacotes e Preços</a>
+        <a href="#faq-secao" id="nav-link-faq">Dúvidas Frequentes</a>
+      </nav>
+      <a href="#pacotes-precos" class="btn btn-primary btn-sm" id="nav-cta-comprar">Escolher Meu Kit</a>
+    </div>
+  </header>
+
+  <main id="topo">
+    <!-- HERO -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Kit Prático em Excel &amp; Google Planilhas • Sem Mensalidade</span>
+          <h1>Descubra o valor real da sua hora clínica, controle faltas e pague menos imposto no Carnê-Leão</h1>
+          <p class="hero-lead">
+            Criado especificamente para <strong>psicólogos clínicos autônomos</strong> organizarem honorários, pacotes mensais, vagas sociais, recibos do Receita Saúde e contrato terapêutico em <strong>15 minutos por semana</strong>.
+          </p>
+          <div class="hero-cta-row">
+            <a href="#pacotes-precos" class="btn btn-primary" id="hero-btn-comprar">Ver Pacotes (A partir de R$ 37)</a>
+            <a href="#simulador-interativo" class="btn btn-outline" id="hero-btn-simular">Testar Calculadora Ao Vivo</a>
+          </div>
+          <div class="trust-strip">
+            <div class="trust-item">
+              <strong>Pagamento Único</strong>
+              <span>Zero assinatura mensal</span>
+            </div>
+            <div class="trust-item">
+              <strong>Sigilo CFP / LGPD</strong>
+              <span>Arquivos 100% no seu controle</span>
+            </div>
+            <div class="trust-item">
+              <strong>Pronto em 5 Min</strong>
+              <span>Com exemplos já preenchidos</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src="assets/psigestao-hero-mockup.jpg" alt="Visão geral dos painéis do Kit PsiGestão Pro para Psicólogos Clínicos">
+        </div>
+      </div>
+    </section>
+
+    <!-- SIMULADOR INTERATIVO AO VIVO -->
+    <section class="section section-alt" id="simulador-interativo">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Experimente Antes de Comprar</span>
+          <h2>Simulador Ao Vivo: Quanto Sua Sessão Deveria Custar?</h2>
+          <p>Mova os controles abaixo (ou teste o caso de referência da Dra. Camila) e veja em tempo real o cálculo exato que a <strong>Planilha 01</strong> faz para o seu consultório.</p>
+        </div>
+
+        <div class="calc-wrapper">
+          <div class="calc-controls">
+            <div class="calc-top-row">
+              <strong>Parâmetros do Seu Consultório</strong>
+              <button type="button" class="btn btn-outline btn-sm" id="btn-reset-camila">Restaurar Exemplo (Dra. Camila)</button>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="sim-dias">
+                <span>Dias atendidos por semana</span>
+                <output id="out-dias">5 dias</output>
+              </label>
+              <input type="range" id="sim-dias" min="1" max="6" step="1" value="5">
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="sim-sessoes">
+                <span>Meta de sessões clínicas por dia (50 min)</span>
+                <output id="out-sessoes">5 sessões/dia</output>
+              </label>
+              <input type="range" id="sim-sessoes" min="1" max="10" step="1" value="5">
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="sim-custos">
+                <span>Custos Fixos Mensais (Sala, CRP, Supervisão, Terapia, Internet)</span>
+                <output id="out-custos">R$ 2.200,00</output>
+              </label>
+              <input type="range" id="sim-custos" min="200" max="6000" step="50" value="2200">
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="sim-meta">
+                <span>Meta de Renda Líquida Livre por Mês (+10% Reserva Férias)</span>
+                <output id="out-meta">R$ 6.000,00</output>
+              </label>
+              <input type="range" id="sim-meta" min="2000" max="20000" step="250" value="6000">
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="sim-imposto">
+                <span>Alíquota Média Estimada de Imposto (Carnê-Leão / Simples)</span>
+                <output id="out-imposto">12%</output>
+              </label>
+              <input type="range" id="sim-imposto" min="6" max="27" step="1" value="12">
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="sim-social">
+                <span>Valor que deseja cobrar na Vaga Social</span>
+                <output id="out-social">R$ 60,00</output>
+              </label>
+              <input type="range" id="sim-social" min="30" max="100" step="5" value="60">
+            </div>
+          </div>
+
+          <div class="calc-results">
+            <div class="result-hero">
+              <span class="lbl">Valor Comercial Recomendado (Sessão Avulsa)</span>
+              <span class="val" id="res-valor-comercial">R$ 110,00</span>
+              <span class="sub">Valor Ideal Matemático: <strong id="res-valor-ideal">R$ 105,26</strong> (arredondado em múltiplos de R$ 5)</span>
+            </div>
+
+            <div class="result-grid">
+              <div class="result-stat">
+                <small>Sessões Efetivas / Mês (-10% vacância)</small>
+                <strong id="res-sessoes-efetivas">95 sessões</strong>
+              </div>
+              <div class="result-stat">
+                <small>Faturamento Bruto Necessário</small>
+                <strong id="res-fat-bruto">R$ 10.000,00</strong>
+              </div>
+              <div class="result-stat">
+                <small>Custo Mínimo / Sessão (Equilíbrio)</small>
+                <strong id="res-custo-min">R$ 26,32</strong>
+              </div>
+              <div class="result-stat">
+                <small>Pacote Mensal 4 Sessões (5% desc.)</small>
+                <strong id="res-pacote-mensal">R$ 418,00</strong>
+              </div>
+              <div class="result-stat">
+                <small>Reserva Férias (10%) + Imposto/Mês</small>
+                <strong id="res-ferias-imposto">R$ 600 + R$ 1.200</strong>
+              </div>
+              <div class="result-stat">
+                <small>Limite Seguro de Vagas Sociais</small>
+                <strong id="res-vagas-sociais">9 sessões (2 pac.)</strong>
+              </div>
+            </div>
+
+            <a href="#pacotes-precos" class="btn btn-primary" id="calc-btn-baixar" style="width:100%;">
+              Baixar a Planilha Completa com Esse Cálculo
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANTES VS DEPOIS -->
+    <section class="section">
+      <div class="container split-grid">
+        <div>
+          <img class="comparison-img" src="assets/psigestao-antes-depois.jpg" alt="Comparativo Consultório sem gestão vs Com PsiGestão Pro">
+        </div>
+        <div>
+          <span class="eyebrow">Da Sobrecarga à Clareza Clínica</span>
+          <h2 style="font-size:30px; margin:0 0 16px 0;">Por que psicólogos excelentes perdem dinheiro sem perceber?</h2>
+          <div class="pillar-list">
+            <div class="pillar-item">
+              <h3>1. Fim do "Cobro o que todo mundo cobra"</h3>
+              <p>A maioria esquece de incluir as 4,2 semanas ativas do mês, a reserva de férias de 10% e o custo da própria terapia e supervisão. Com a Calculadora 01, você enxerga até o centavo do seu ponto de equilíbrio.</p>
+            </div>
+            <div class="pillar-item">
+              <h3>2. Política de Faltas Clara e Sem Culpa</h3>
+              <p>A Planilha 02 separa automaticamente <em>Falta Avisada no Prazo (Repor)</em> de <em>Falta Sem Aviso (Cobrada)</em>, e o Kit Completo traz o Contrato Terapêutico e o Script de WhatsApp exato para aplicar a regra de 24h com empatia.</p>
+            </div>
+            <div class="pillar-item">
+              <h3>3. Receita Saúde e Livro-Caixa Sem Medo do Leão</h3>
+              <p>A Planilha 03 separa despesas dedutíveis (<code>"Sim"</code>: sala, CRP, testes SATEPSI, sistemas) das não dedutíveis (<code>"Não"</code>), reduzindo legalmente a base de cálculo do seu Carnê-Leão.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- POR DENTRO DAS FERRAMENTAS (TABS INTERATIVAS) -->
+    <section class="section section-alt" id="tour-ferramentas">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Transparência Total</span>
+          <h2>Veja Exatamente o Que Você Vai Receber</h2>
+          <p>Clique em cada entregável abaixo para inspecionar a estrutura das abas e o padrão visual de 3 cores.</p>
+        </div>
+
+        <div class="tabs-bar" role="tablist">
+          <button type="button" class="tab-btn active" id="tab-btn-1" onclick="switchTourTab(1)">📊 Planilha 01: Hora Clínica e Pacotes</button>
+          <button type="button" class="tab-btn" id="tab-btn-2" onclick="switchTourTab(2)">📅 Planilha 02: Sessões, Faltas e Caixa</button>
+          <button type="button" class="tab-btn" id="tab-btn-3" onclick="switchTourTab(3)">🧾 Planilha 03: Recibos e Livro-Caixa</button>
+          <button type="button" class="tab-btn" id="tab-btn-4" onclick="switchTourTab(4)">📄 Guia 04: Contrato CFP e 8 Scripts</button>
+        </div>
+
+        <!-- TAB 1 -->
+        <div class="tab-panel active" id="tab-panel-1">
+          <div>
+            <h3 style="margin-top:0;">01-Calculadora-Hora-Clinica-e-Pacotes.xlsx</h3>
+            <p>Presente em <strong>todos os pacotes</strong>. Possui 4 abas integradas (<code>Instrucoes</code>, <code>Calculadora_Exemplo</code>, <code>Calculadora_Em_Branco</code> e <code>Tabela_Pacotes_e_Social</code>).</p>
+            <ul>
+              <li><strong>Padrão de 3 Cores:</strong> Digite apenas nas células <span class="cell-blue" style="padding:2px 6px; border-radius:4px;">Azuis</span>. As células <span class="cell-purple" style="padding:2px 6px; border-radius:4px;">Roxas</span> e <span class="cell-green" style="padding:2px 6px; border-radius:4px;">Verdes</span> calculam sozinhas.</li>
+              <li><strong>Simulador de Vagas Sociais:</strong> Calcula quantas sessões sociais cabem na sua agenda sem reduzir sua meta salarial.</li>
+              <li><strong>Trava Anti-Erro:</strong> Usa <code>SEERRO</code> em todas as divisões (nunca exibe <code>#DIV/0!</code>).</li>
+            </ul>
+          </div>
+          <div>
+            <table class="preview-table">
+              <thead>
+                <tr><th>Código</th><th>Indicador na Planilha 01</th><th>Gabarito Exemplo</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>AG-06</td><td>Sessões Efetivas Pagas/Mês (-10%)</td><td class="cell-purple">95 sessões</td></tr>
+                <tr><td>CF-07</td><td>Total de Custos Fixos Mensais</td><td class="cell-purple">R$ 2.200,00</td></tr>
+                <tr><td>MF-01</td><td>Meta de Renda Líquida Livre</td><td class="cell-blue">R$ 6.000,00</td></tr>
+                <tr><td>MF-06</td><td>Faturamento Bruto Necessário</td><td class="cell-purple">R$ 10.000,00</td></tr>
+                <tr><td>RES-01</td><td>Custo Mínimo / Ponto de Equilíbrio</td><td class="cell-purple">R$ 26,32</td></tr>
+                <tr><td>RES-03</td><td>Valor Comercial Sugerido (Avulso)</td><td class="cell-green">R$ 110,00</td></tr>
+                <tr><td>TAB-04</td><td>Pacote Mensal 4 Sessões (5% desc.)</td><td class="cell-green">R$ 418,00</td></tr>
+                <tr><td>SOC-04</td><td>Limite Máximo de Sessões Sociais</td><td class="cell-green">9 sessões/mês</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2 -->
+        <div class="tab-panel" id="tab-panel-2">
+          <div>
+            <h3 style="margin-top:0;">02-Controle-Sessoes-Faltas-e-Fluxo-Caixa.xlsx</h3>
+            <p>Incluída no <strong>Pacote Duo (R$ 67)</strong> e no <strong>Kit Completo (R$ 97)</strong>. Acompanha versão com exemplo preenchido e versão limpa pronta para uso.</p>
+            <ul>
+              <li><strong>Sigilo Profissional:</strong> Cadastro por código e iniciais (<code>PAC-01 / Ana M.</code>).</li>
+              <li><strong>Contagem Automática de Reposições:</strong> Quando você lança uma <code>Reposição Realizada</code>, a planilha abate automaticamente o saldo de <code>Falta Avisada (Repor)</code>.</li>
+              <li><strong>Fluxo de Caixa Automático:</strong> As entradas sobem sozinhas por modalidade (Pacote Mensal, Avulso, Reembolso, Quinzenal e Social).</li>
+            </ul>
+          </div>
+          <div>
+            <table class="preview-table">
+              <thead>
+                <tr><th>Código</th><th>Painel Executivo Automático (Aba 5)</th><th>Exemplo</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>FIN-01</td><td>Total Faturado (Competência)</td><td class="cell-purple">R$ 1.838,00</td></tr>
+                <tr><td>FIN-02</td><td>Total Efetivamente Recebido (Caixa)</td><td class="cell-green">R$ 1.728,00</td></tr>
+                <tr><td>FIN-03</td><td>Total Pendente (Inadimplência)</td><td class="cell-purple">R$ 110,00 (1 pac.)</td></tr>
+                <tr><td>FIN-06</td><td>Saldo Líquido Livre de Caixa</td><td class="cell-green">R$ 1.108,00</td></tr>
+                <tr><td>AGE-01</td><td>Sessões Realizadas (incl. Reposições)</td><td class="cell-green">16 sessões</td></tr>
+                <tr><td>AGE-02</td><td>Faltas Sem Aviso (Cobradas)</td><td class="cell-purple">1 sessão</td></tr>
+                <tr><td>AGE-03</td><td>Faltas Avisadas Pendentes de Repor</td><td class="cell-purple">1 sessão</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 3 -->
+        <div class="tab-panel" id="tab-panel-3">
+          <div>
+            <h3 style="margin-top:0;">03-Controle-Recibos-Carne-Leao-e-Reembolso.xlsx</h3>
+            <p>Exclusiva do <strong>Kit Completo PsiGestão Pro (R$ 97)</strong>. Criada para tirar o peso dos recibos mensais e do Imposto de Renda.</p>
+            <ul>
+              <li><strong>Checklist Receita Saúde e Reembolso:</strong> Controle data, valor, status de emissão no app da Receita e relatórios enviados para convênios.</li>
+              <li><strong>Filtro Automático do Livro-Caixa:</strong> Usa <code>SOMASE</code> para somar apenas despesas marcadas como dedutíveis (<code>"Sim"</code>), evitando erro fiscal com despesas não dedutíveis (<code>"Não"</code>).</li>
+              <li><strong>Calculadora de Reajuste Anual:</strong> Entrega opção conservadora e opção integral arredondadas em múltiplos de R$ 5.</li>
+            </ul>
+          </div>
+          <div>
+            <table class="preview-table">
+              <thead>
+                <tr><th>Código</th><th>Apuração do Carnê-Leão (Aba 3)</th><th>Exemplo</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>AP-01</td><td>Receita PF com Recibo no Mês</td><td class="cell-purple">R$ 7.500,00</td></tr>
+                <tr><td>AP-02</td><td>Total Geral de Despesas Lançadas</td><td class="cell-purple">R$ 2.200,00</td></tr>
+                <tr><td>AP-03</td><td>Despesas Dedutíveis no Livro-Caixa ("Sim")</td><td class="cell-green">R$ 1.500,00</td></tr>
+                <tr><td>AP-04</td><td>Despesas Não Dedutíveis Separadas ("Não")</td><td class="cell-purple">R$ 700,00</td></tr>
+                <tr><td>AP-05</td><td>Base Líquida do Carnê-Leão (7.500 − 1.500)</td><td class="cell-green">R$ 6.000,00</td></tr>
+                <tr><td>AP-07</td><td>Economia Estimada de IRPF no Mês (27,5%)</td><td class="cell-green">R$ 412,50/mês</td></tr>
+                <tr><td>REJ-04</td><td>Reajuste Anual (R$ 100 + 6,5% Conservador)</td><td class="cell-green">R$ 105,00</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 4 -->
+        <div class="tab-panel" id="tab-panel-4">
+          <div>
+            <h3 style="margin-top:0;">04-Guia-Completo-e-Scripts-Eticos-CRP (HTML/PDF &amp; MD)</h3>
+            <p>Exclusivo do <strong>Kit Completo PsiGestão Pro (R$ 97)</strong>. Inclui botões para copiar cada script com 1 clique para o WhatsApp.</p>
+            <ul>
+              <li><strong>Contrato Terapêutico Completo:</strong> Cláusulas de 50 min, sigilo profissional, pacote mensal vs. avulso, regra clara de 24h para faltas e emissão via Receita Saúde.</li>
+              <li><strong>8 Scripts de WhatsApp Prontos:</strong> Textos empáticos e firmes para cobrar sem constrangimento e preservar o vínculo clínico.</li>
+            </ul>
+          </div>
+          <div>
+            <table class="preview-table">
+              <thead>
+                <tr><th>#</th><th>Script de WhatsApp Incluído</th><th>Situação Clínica</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>01</td><td>Boas-vindas e Envio do Contrato</td><td>Antes da 1ª sessão</td></tr>
+                <tr><td>02</td><td>Confirmação Gentil de Sessão</td><td>24h antes do atendimento</td></tr>
+                <tr><td>03</td><td>Lembrete Ético de Pagamento</td><td>Pacote ou sessão em atraso</td></tr>
+                <tr><td>04</td><td>Falta Sem Aviso Prévio (24h)</td><td>Aplicação ética da cobrança</td></tr>
+                <tr><td>05</td><td>Agendamento de Reposição</td><td>Falta avisada no prazo</td></tr>
+                <tr><td>06</td><td>Envio de Recibo e Reembolso</td><td>Fechamento mensal Receita Saúde</td></tr>
+                <tr><td>07</td><td>Comunicado de Férias / Recesso</td><td>30 dias antes da pausa</td></tr>
+                <tr><td>08</td><td>Comunicado de Reajuste Anual</td><td>Atualização anual de honorários</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREÇOS / ESCADA DE VALOR -->
+    <section class="section" id="pacotes-precos">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Investimento Único • Acesso Vitalício</span>
+          <h2>Escolha o Pacote Ideal para o Seu Consultório</h2>
+          <p>Até mesmo o Kit Completo custa <strong>menos que 1 única sessão de psicoterapia</strong> e se paga na primeira falta não perdida ou dedução do Livro-Caixa.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- PACOTE 1 -->
+          <article class="pricing-card">
+            <div>
+              <h3 class="pkg-name">Ferramenta Individual</h3>
+              <p class="pkg-desc">Para quem quer acertar imediatamente o preço da sessão, pacotes mensais e vagas sociais.</p>
+              <div class="pkg-price">R$ 37 <span>/ pagamento único</span></div>
+              <div class="pkg-Anchor">Acesso vitalício imediato</div>
+              <ul class="feature-list">
+                <li>✅ <strong>Planilha 01:</strong> Calculadora de Hora Clínica, Pacotes e Vagas Sociais (.xlsx)</li>
+                <li>✅ Aba com Exemplo Preenchido (Dra. Camila) + Aba Pronta para Uso</li>
+                <li>✅ <strong>Guia Rápido de Precificação Clínica</strong> (HTML/PDF e Markdown)</li>
+                <li style="opacity:0.45;">❌ Planilha 02 (Controle de Sessões, Faltas e Caixa)</li>
+                <li style="opacity:0.45;">❌ Planilha 03 (Recibos Receita Saúde e Livro-Caixa)</li>
+                <li style="opacity:0.45;">❌ Contrato Terapêutico + 8 Scripts de WhatsApp</li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-outline" id="btn-checkout-individual" onclick="openCheckoutModal('individual')">
+              Quero a Ferramenta Individual (R$ 37)
+            </button>
+          </article>
+
+          <!-- PACOTE 2 -->
+          <article class="pricing-card">
+            <div>
+              <h3 class="pkg-name">Pacote Duo</h3>
+              <p class="pkg-desc">Para precificar certo e assumir o controle semanal das sessões, faltas, reposições e caixa.</p>
+              <div class="pkg-price">R$ 67 <span>/ pagamento único</span></div>
+              <div class="pkg-Anchor">Economia sobre as ferramentas avulsas</div>
+              <ul class="feature-list">
+                <li>✅ <strong>Tudo da Ferramenta Individual (Planilha 01 + Guia)</strong></li>
+                <li>✅ <strong>Planilha 02:</strong> Controle de Sessões, Faltas, Reposições e Fluxo de Caixa (.xlsx)</li>
+                <li>✅ Painel Executivo Automático de Inadimplência e Comparecimento</li>
+                <li>✅ Versão Exemplo Preenchido + Versão Limpa Pronta para Uso</li>
+                <li style="opacity:0.45;">❌ Planilha 03 (Recibos Receita Saúde e Livro-Caixa)</li>
+                <li style="opacity:0.45;">❌ Contrato Terapêutico + 8 Scripts de WhatsApp</li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-outline" id="btn-checkout-duo" onclick="openCheckoutModal('duo')">
+              Quero o Pacote Duo (R$ 67)
+            </button>
+          </article>
+
+          <!-- PACOTE 3 -->
+          <article class="pricing-card featured">
+            <div>
+              <span class="featured-tag">⭐ Mais Escolhido • Solução Completa</span>
+              <h3 class="pkg-name">Kit Completo PsiGestão Pro</h3>
+              <p class="pkg-desc">Gestão clínica, financeira, fiscal (Carnê-Leão/Receita Saúde) e comunicação ética ponta a ponta.</p>
+              <div class="pkg-price">R$ 97 <span>/ pagamento único</span></div>
+              <div class="pkg-Anchor">Menos que o valor de 1 sessão clínica</div>
+              <ul class="feature-list">
+                <li>✅ <strong>Planilha 01:</strong> Calculadora de Hora Clínica, Pacotes e Vagas Sociais</li>
+                <li>✅ <strong>Planilha 02:</strong> Controle de Sessões, Faltas, Reposições e Fluxo de Caixa</li>
+                <li>✅ <strong>Planilha 03:</strong> Controle de Recibos (Receita Saúde), Reembolso de Convênio, Livro-Caixa Carnê-Leão e Reajuste Anual</li>
+                <li>✅ <strong>Contrato Terapêutico Editável</strong> (Alinhado ao CFP/CRP e Res. 09/2024)</li>
+                <li>✅ <strong>8 Scripts Prontos para WhatsApp</strong> (com botão copiar em 1 clique)</li>
+                <li>✅ <strong>Guia Completo Integrado</strong> (HTML/PDF Imprimível)</li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-checkout-completo" onclick="openCheckoutModal('completo')">
+              Quero o Kit Completo PsiGestão Pro (R$ 97)
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-alt" id="faq-secao">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Tire Suas Dúvidas</span>
+          <h2>Perguntas Frequentes</h2>
+          <p>Tudo o que você precisa saber antes de organizar seu consultório com o PsiGestão Pro.</p>
+        </div>
+
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary>Preciso ter Excel pago ou saber mexer em fórmulas?</summary>
+            <p>Não! Todas as planilhas funcionam tanto no <strong>Microsoft Excel</strong> quanto gratuitamente no <strong>Google Planilhas</strong> (pelo computador ou celular). Além disso, você só preenche as células azuis — todas as fórmulas já estão prontas e protegidas contra erros.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Meus dados e o sigilo dos pacientes ficam seguros?</summary>
+            <p>Sim, 100%. Diferente de aplicativos em nuvem de terceiros, os arquivos ficam salvos apenas no seu computador ou na sua conta privada do Google Drive. Além disso, a Planilha 02 utiliza cadastro codificado por código e iniciais (ex: <code>PAC-01 / Ana M.</code>), respeitando o sigilo do CRP e a LGPD.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Sou recém-formada(o) ou atendo 100% online. O Kit serve para mim?</summary>
+            <p>Perfeitamente. Quem está começando evita o erro clássico de cobrar um valor que não paga os custos da profissão, e quem atende online consegue controlar pacotes mensais, faltas de última hora, recibos do Receita Saúde e despesas dedutíveis com precisão.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Existe alguma mensalidade ou cobrança recorrente?</summary>
+            <p>Nenhuma. O pagamento é único (R$ 37, R$ 67 ou R$ 97 conforme o pacote escolhido) e você pode duplicar e usar os arquivos por quantos meses e anos quiser.</p>
+          </details>
+          <details class="faq-item">
+            <summary>E se eu tiver dúvidas ao preencher?</summary>
+            <p>Cada planilha possui uma aba inicial de <code>Instrucoes</code> passo a passo e uma aba de <code>Exemplo Preenchido</code> (Caso Dra. Camila) para você ver exatamente como cada campo funciona, além do Guia Prático ilustrado e garantia incondicional de 7 dias.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL DE CHECKOUT CONFIGURÁVEL -->
+  <div class="modal-backdrop" id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <span class="eyebrow" id="modal-badge">Resumo do Pedido</span>
+      <h3 id="modal-title" style="margin:0 0 8px 0; font-size:24px;">Kit Completo PsiGestão Pro</h3>
+      <p id="modal-desc" style="margin:0 0 18px 0; font-size:14px; color:var(--ink-secondary);"></p>
+      <div style="background:var(--sage-light); border:1px solid var(--sage-border); border-radius:10px; padding:16px; margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong>Valor do Investimento Único:</strong>
+          <span id="modal-price" style="font-size:26px; font-weight:800; color:var(--sage-dark);">R$ 97,00</span>
+        </div>
+        <small style="color:var(--ink-muted); display:block; margin-top:6px;">
+          Entrega digital imediata (.zip com Planilhas .xlsx + Guias HTML/PDF e MD) • Garantia de 7 dias.
+        </small>
+      </div>
+      <div style="display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap;">
+        <button type="button" class="btn btn-outline btn-sm" id="btn-close-modal" onclick="closeCheckoutModal()">Voltar</button>
+        <a href="#pacotes-precos" class="btn btn-primary btn-sm" id="btn-confirm-checkout">Prosseguir para Pagamento Seguro</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <strong>PsiGestão Pro</strong> — Kit de Gestão Financeira, Clínica e Fiscal para Psicólogos Autônomos.<br>
+      Compatível com Microsoft Excel e Google Planilhas • Alinhado às boas práticas éticas do CFP/CRP.
+    </div>
+  </footer>
+
+  <script>
+    /**
+     * CONFIGURAÇÃO DE LINKS DE CHECKOUT (HOTMART / KIWIFY / EDUZZ / KIRVANO / WHATSAPP)
+     * Para ativar seu link real de venda, basta colar a URL entre as aspas abaixo:
+     */
+    const CONFIG_CHECKOUT = {
+      individual: {
+        nome: "Pacote 1 — Ferramenta Individual",
+        preco: "R$ 37,00",
+        descricao: "Inclui a Planilha 01 (Calculadora de Hora Clínica, Pacotes e Simulador de Vagas Sociais) + Guia Rápido em HTML/PDF e Markdown.",
+        url: "" // Cole aqui seu link de checkout de R$ 37
+      },
+      duo: {
+        nome: "Pacote 2 — Pacote Duo",
+        preco: "R$ 67,00",
+        descricao: "Inclui a Planilha 01 + Planilha 02 (Controle de Sessões, Faltas, Reposições, Fluxo de Caixa e Painel Executivo) + Guia Rápido.",
+        url: "" // Cole aqui seu link de checkout de R$ 67
+      },
+      completo: {
+        nome: "Pacote 3 — Kit Completo PsiGestão Pro",
+        preco: "R$ 97,00",
+        descricao: "Inclui Planilhas 01, 02 e 03 (Recibos Receita Saúde, Reembolso Convênio, Livro-Caixa Carnê-Leão e Reajuste Anual) + Contrato Terapêutico Editável + 8 Scripts de WhatsApp.",
+        url: "" // Cole aqui seu link de checkout de R$ 97
+      }
+    };
+
+    function formatBRL(v) {
+      return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    // Mesma matemática exata validada na Planilha 01 (Seção 4.1 do PLANO-DE-PRODUCAO.md)
+    function updateSimulator() {
+      const dias = Number(document.getElementById("sim-dias").value);
+      const sessoesDia = Number(document.getElementById("sim-sessoes").value);
+      const custosFixos = Number(document.getElementById("sim-custos").value);
+      const metaLiquida = Number(document.getElementById("sim-meta").value);
+      const aliqImposto = Number(document.getElementById("sim-imposto").value) / 100;
+      const valorSocial = Number(document.getElementById("sim-social").value);
+
+      const semanasAtivas = 4.2;
+      const taxaVacancia = 0.10;
+      const percFerias = 0.10;
+
+      document.getElementById("out-dias").textContent = dias + (dias === 1 ? " dia" : " dias");
+      document.getElementById("out-sessoes").textContent = sessoesDia + " sessões/dia";
+      document.getElementById("out-custos").textContent = formatBRL(custosFixos);
+      document.getElementById("out-meta").textContent = formatBRL(metaLiquida);
+      document.getElementById("out-imposto").textContent = Math.round(aliqImposto * 100) + "%";
+      document.getElementById("out-social").textContent = formatBRL(valorSocial);
+
+      const capMax = dias * semanasAtivas * sessoesDia;
+      const sessoesEfetivas = Math.round(capMax * (1 - taxaVacancia));
+      const reservaFerias = metaLiquida * percFerias;
+      const necPreImposto = custosFixos + metaLiquida + reservaFerias;
+      const fatBrutoMeta = aliqImposto < 1 ? necPreImposto / (1 - aliqImposto) : 0;
+      const valorImposto = fatBrutoMeta * aliqImposto;
+      const fatEquilibrio = aliqImposto < 1 ? custosFixos / (1 - aliqImposto) : 0;
+
+      const custoMinSessao = sessoesEfetivas > 0 ? Math.round((fatEquilibrio / sessoesEfetivas) * 100) / 100 : 0;
+      const valorIdeal = sessoesEfetivas > 0 ? Math.round((fatBrutoMeta / sessoesEfetivas) * 100) / 100 : 0;
+      const valorComercial = valorIdeal > 0 ? Math.ceil(valorIdeal / 5) * 5 : 0;
+      const pacoteMensal4 = Math.round(valorComercial * 0.95 * 4 * 100) / 100;
+
+      let sessoesSociaisMax = 0;
+      if (valorComercial > valorSocial && sessoesEfetivas > 0) {
+        const excedenteTotal = (sessoesEfetivas * valorComercial) - fatBrutoMeta;
+        sessoesSociaisMax = Math.max(0, Math.floor(excedenteTotal / (valorComercial - valorSocial)));
+      }
+      const pacSociaisSem = Math.floor(sessoesSociaisMax / 4);
+
+      document.getElementById("res-valor-comercial").textContent = formatBRL(valorComercial);
+      document.getElementById("res-valor-ideal").textContent = formatBRL(valorIdeal);
+      document.getElementById("res-sessoes-efetivas").textContent = sessoesEfetivas + " sessões";
+      document.getElementById("res-fat-bruto").textContent = formatBRL(fatBrutoMeta);
+      document.getElementById("res-custo-min").textContent = formatBRL(custoMinSessao);
+      document.getElementById("res-pacote-mensal").textContent = formatBRL(pacoteMensal4);
+      document.getElementById("res-ferias-imposto").textContent =
+        "R$ " + Math.round(reservaFerias).toLocaleString("pt-BR") + " + R$ " + Math.round(valorImposto).toLocaleString("pt-BR");
+      document.getElementById("res-vagas-sociais").textContent =
+        sessoesSociaisMax + " sessões (" + pacSociaisSem + " pac.)";
+    }
+
+    function resetCamila() {
+      document.getElementById("sim-dias").value = 5;
+      document.getElementById("sim-sessoes").value = 5;
+      document.getElementById("sim-custos").value = 2200;
+      document.getElementById("sim-meta").value = 6000;
+      document.getElementById("sim-imposto").value = 12;
+      document.getElementById("sim-social").value = 60;
+      updateSimulator();
+    }
+
+    function switchTourTab(idx) {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById("tab-btn-" + i).classList.toggle("active", i === idx);
+        document.getElementById("tab-panel-" + i).classList.toggle("active", i === idx);
+      }
+    }
+
+    function openCheckoutModal(pkgKey) {
+      const cfg = CONFIG_CHECKOUT[pkgKey];
+      if (!cfg) return;
+      if (cfg.url && cfg.url.trim() !== "") {
+        window.open(cfg.url, "_blank", "noopener");
+        return;
+      }
+      document.getElementById("modal-title").textContent = cfg.nome;
+      document.getElementById("modal-desc").textContent = cfg.descricao;
+      document.getElementById("modal-price").textContent = cfg.preco;
+      document.getElementById("checkout-modal").classList.add("open");
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById("checkout-modal").classList.remove("open");
+    }
+
+    ["sim-dias", "sim-sessoes", "sim-custos", "sim-meta", "sim-imposto", "sim-social"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", updateSimulator);
+    });
+    document.getElementById("btn-reset-camila").addEventListener("click", resetCamila);
+
+    updateSimulator();
+  </script>
+</body>
+</html>

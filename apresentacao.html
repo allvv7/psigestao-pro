@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apresentação Comercial — PsiGestão Pro (Kit de Gestão para Psicólogos)</title>
+  <style>
+    :root {
+      --bg: #fbf9f5;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --sage: #0f766e;
+      --sage-dark: #115e59;
+      --sage-soft: #ccfbf1;
+      --terracotta: #c2410c;
+      --amber-soft: #fef3c7;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(251, 249, 245, 0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand {
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .brand span { color: var(--sage); }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn:hover { border-color: var(--sage); color: var(--sage); }
+    .btn-primary {
+      background: var(--sage);
+      color: #fff;
+      border-color: var(--sage);
+    }
+    .btn-primary:hover { background: var(--sage-dark); color: #fff; }
+    .deck {
+      max-width: 1040px;
+      margin: 28px auto;
+      padding: 0 20px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .slide {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 44px 48px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+      position: relative;
+    }
+    .slide-number {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sage);
+      margin-bottom: 10px;
+    }
+    .slide h2 {
+      font-size: 28px;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin: 0 0 14px 0;
+      color: var(--ink);
+    }
+    .slide p.lead {
+      font-size: 17px;
+      color: var(--muted);
+      margin: 0 0 24px 0;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      align-items: center;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+    }
+    .card h3 {
+      margin: 0 0 8px 0;
+      font-size: 17px;
+      color: var(--ink);
+    }
+    .card p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .slide-img {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .metric-box {
+      background: #f0fdfa;
+      border: 1px solid #99f6e4;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .metric-box .num {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--sage-dark);
+      display: block;
+    }
+    .metric-box .lbl {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .price-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .price-card.featured {
+      background: #f0fdfa;
+      border: 2px solid var(--sage);
+    }
+    .price-tag {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--ink);
+      margin: 12px 0;
+    }
+    .price-tag small {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    @media print {
+      .topbar { display: none; }
+      body { background: #fff; }
+      .deck { margin: 0; padding: 0; gap: 0; }
+      .slide {
+        box-shadow: none;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        border-radius: 0;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">PsiGestão <span>Pro</span> — Apresentação Comercial (6 Slides)</div>
+    <div class="controls">
+      <button class="btn" onclick="window.print()">🖨️ Salvar / Imprimir Apresentação em PDF</button>
+      <a class="btn btn-primary" href="index.html">🌐 Abrir Landing Page de Vendas</a>
+    </div>
+  </div>
+
+  <div class="deck">
+    <!-- SLIDE 1 -->
+    <section class="slide">
+      <div class="slide-number">Slide 01 • Proposta de Valor</div>
+      <div class="grid-2">
+        <div>
+          <h2>Quanto realmente sobra livre da sua sessão depois da sala, supervisão, CRP e Carnê-Leão?</h2>
+          <p class="lead">O <strong>PsiGestão Pro</strong> é o kit prático em Excel e Google Planilhas criado especificamente para psicólogos clínicos autônomos organizarem honorários, faltas, reposições e Livro-Caixa em 15 minutos por semana.</p>
+          <div class="metric-row">
+            <div class="metric-box">
+              <span class="num">R$ 0/mês</span>
+              <span class="lbl">Zero Mensalidade</span>
+            </div>
+            <div class="metric-box">
+              <span class="num">100% Sigiloso</span>
+              <span class="lbl">Dados no Seu Dispositivo</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <img class="slide-img" src="assets/psigestao-hero-mockup.jpg" alt="Mockup PsiGestão Pro">
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide">
+      <div class="slide-number">Slide 02 • O Diagnóstico do Consultório</div>
+      <h2>Os 3 Vazamentos Financeiros do Psicólogo Autônomo</h2>
+      <p class="lead">Na faculdade aprendemos clínica e ética, mas quase nunca aprendemos a proteger a sustentabilidade financeira do consultório.</p>
+      <div class="grid-2">
+        <div class="grid-3" style="grid-template-columns: 1fr;">
+          <div class="card">
+            <h3>1. Precificação sem Custos Invisíveis</h3>
+            <p>Cobrar o "preço médio de colegas" sem calcular feriados (4,2 semanas/mês), reserva de férias (10%), tripé clínico (supervisão + terapia) e alíquota real de imposto.</p>
+          </div>
+          <div class="card">
+            <h3>2. Faltas em Cima da Hora Não Cobradas</h3>
+            <p>Sem um Contrato Terapêutico claro com regra de 24h e sem controle de reposições pendentes, cada falta não avisada vira prejuízo direto no fim do mês.</p>
+          </div>
+          <div class="card">
+            <h3>3. Pagar Imposto a Mais no Carnê-Leão</h3>
+            <p>Não separar as despesas dedutíveis do Livro-Caixa (aluguel de sala, CRP, testes SATEPSI, sistemas) faz você tributar sobre 100% da receita bruta.</p>
+          </div>
+        </div>
+        <div>
+          <img class="slide-img" src="assets/psigestao-antes-depois.jpg" alt="Comparativo Sem Gestão vs Com PsiGestão Pro">
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide">
+      <div class="slide-number">Slide 03 • As 3 Ferramentas Práticas</div>
+      <h2>Um Sistema Completo que Funciona no Excel e no Google Planilhas</h2>
+      <p class="lead">Fórmulas 100% automáticas, sem macros complicadas e com código visual de 3 cores (Azul = Digite | Roxo = Cálculo | Verde = Resultado).</p>
+      <div class="grid-3">
+        <div class="card">
+          <h3>📊 Planilha 01: Hora Clínica, Pacotes e Vagas Sociais</h3>
+          <p>Calcula Custo Mínimo por Sessão (Ponto de Equilíbrio), Valor Ideal, Valor Comercial arredondado (múltiplos de R$ 5), Pacote Mensal (4 sessões) e <strong>quantos pacientes sociais você comporta sem prejuízo</strong>.</p>
+        </div>
+        <div class="card">
+          <h3>📅 Planilha 02: Sessões, Faltas, Reposições e Caixa</h3>
+          <p>Cadastro ético por código/iniciais, apuração automática de sessões realizadas, faltas sem aviso (cobradas), faltas avisadas (saldo a repor), alerta de inadimplência e fluxo de caixa por modalidade.</p>
+        </div>
+        <div class="card">
+          <h3>🧾 Planilha 03: Recibos (Receita Saúde), Reembolso e Livro-Caixa</h3>
+          <p>Controle de recibos emitidos no app Receita Saúde, documentos para reembolso de convênios, separação automática de despesas dedutíveis no Carnê-Leão e calculadora de reajuste anual.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 -->
+    <section class="slide">
+      <div class="slide-number">Slide 04 • Estudo de Caso Real (Gabarito Verificado)</div>
+      <h2>Veja na Prática: O Consultório da Dra. Camila</h2>
+      <p class="lead">Todas as planilhas já vêm com uma aba de exemplo preenchida para você comparar com os seus números antes de começar:</p>
+      <div class="metric-row">
+        <div class="metric-box">
+          <span class="num">95 sessões/mês</span>
+          <span class="lbl">5 dias × 4,2 sem × 5/dia (−10% vacância)</span>
+        </div>
+        <div class="metric-box">
+          <span class="num">R$ 26,32</span>
+          <span class="lbl">Custo Mínimo / Ponto de Equilíbrio</span>
+        </div>
+        <div class="metric-box">
+          <span class="num">R$ 110,00</span>
+          <span class="lbl">Valor Comercial p/ Meta Líquida R$ 6.000</span>
+        </div>
+        <div class="metric-box">
+          <span class="num">R$ 418,00</span>
+          <span class="lbl">Pacote Mensal 4 Sessões (5% desc.)</span>
+        </div>
+        <div class="metric-box">
+          <span class="num">9 sessões/mês</span>
+          <span class="lbl">Limite Seguro de Vagas Sociais (a R$ 60)</span>
+        </div>
+        <div class="metric-box">
+          <span class="num">R$ 4.950/ano</span>
+          <span class="lbl">Economia Estimada de IRPF c/ Livro-Caixa</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5 -->
+    <section class="slide">
+      <div class="slide-number">Slide 05 • Comunicação Clínica sem Constrangimento</div>
+      <h2>Contrato Terapêutico Editável + 8 Scripts Prontos para WhatsApp</h2>
+      <p class="lead">No Kit Completo, você recebe os textos exatos para estabelecer limites financeiros com acolhimento e ética (CFP/CRP):</p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>📄 Contrato Terapêutico (CFP / Resolução 09/2024)</h3>
+          <p>Cláusulas prontas de duração (50 min), sigilo profissional, pagamento antecipado de pacotes, <strong>política clara de faltas com aviso prévio de 24 horas</strong>, emissão no Receita Saúde e reajuste anual.</p>
+        </div>
+        <div class="card">
+          <h3>💬 8 Scripts de WhatsApp Copiar & Colar</h3>
+          <p>1. Boas-vindas e contrato • 2. Confirmação 24h antes • 3. Cobrança ética em atraso • 4. Falta sem aviso prévio • 5. Agendamento de reposição • 6. Envio de recibo/reembolso • 7. Comunicado de férias • 8. Reajuste anual.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6 -->
+    <section class="slide">
+      <div class="slide-number">Slide 06 • Oferta e Escada de Valor</div>
+      <h2>Escolha o Pacote Ideal para o Momento do Seu Consultório</h2>
+      <p class="lead">Pagamento único • Acesso vitalício imediato • Custa menos que <strong>1 única sessão de psicoterapia</strong>.</p>
+      <div class="grid-3">
+        <div class="price-card">
+          <div>
+            <strong>🟢 Ferramenta Individual</strong>
+            <div class="price-tag">R$ 37 <small>único</small></div>
+            <p style="font-size:14px; color:var(--muted);">Ideal para calcular o preço certo da sua sessão, pacotes mensais e vagas sociais.</p>
+            <ul style="font-size:13px; padding-left:18px; color:var(--ink);">
+              <li>Planilha 01: Calculadora de Hora Clínica, Pacotes e Vagas Sociais (.xlsx)</li>
+              <li>Guia Rápido de Precificação Clínica (PDF/HTML)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="price-card">
+          <div>
+            <strong>🔵 Pacote Duo</strong>
+            <div class="price-tag">R$ 67 <small>único</small></div>
+            <p style="font-size:14px; color:var(--muted);">Para precificar com segurança e controlar agenda, faltas, reposições e fluxo de caixa.</p>
+            <ul style="font-size:13px; padding-left:18px; color:var(--ink);">
+              <li><strong>Tudo do Pacote Individual</strong></li>
+              <li>Planilha 02: Controle de Sessões, Faltas, Reposições e Fluxo de Caixa (.xlsx)</li>
+              <li>Painel Resumo Automático de Inadimplência</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="price-card featured">
+          <div>
+            <strong>🟣 Kit Completo PsiGestão Pro</strong>
+            <div class="price-tag">R$ 97 <small>único</small></div>
+            <p style="font-size:14px; color:var(--sage-dark); font-weight:600;">Mais Escolhido — Gestão clínica, financeira, fiscal e contrato ético ponta a ponta.</p>
+            <ul style="font-size:13px; padding-left:18px; color:var(--ink);">
+              <li><strong>Tudo do Pacote Duo (Planilhas 01 e 02)</strong></li>
+              <li>Planilha 03: Recibos Receita Saúde, Reembolso Convênio, Livro-Caixa Carnê-Leão e Reajuste Anual</li>
+              <li>Contrato Terapêutico Editável (CFP/CRP)</li>
+              <li>8 Scripts Prontos para WhatsApp</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
